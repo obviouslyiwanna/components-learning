@@ -31,3 +31,7 @@ class ClCheckbox extends HTMLElemnt {
     `;
   }
 }
+
+if (!customElements.get('cl-checkbox')) {
+  customElements.define('cl-checkbox', ClCheckbox);
+}
