@@ -30,10 +30,6 @@ class ClButton extends HTMLElement {
           background: #4096ff;
         }
       </style>
-
-      <button type="button">
-        <slot></slot>
-      </button>
     `;
   }
 }

@@ -6,6 +6,7 @@ dist/
 
 # 缓存和测试产物
 .cache/
+.npm-cache/
 coverage/
 
 # 日志

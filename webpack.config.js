@@ -1,4 +1,5 @@
 const path = require('path');
+// MiniCssExtractPlugin 用于把 CSS 从 JavaScript 中提取成独立的 CSS 文件。
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
@@ -10,10 +11,10 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
 
-    // 每次构建前清空 dist
+    // 每次构建前清空 dist，避免残留
     clean: true,
 
-    // 作为组件库输出
+    // 把项目打成组件库
     library: {
       name: 'ComponentLearning',
       type: 'umd',
@@ -28,6 +29,7 @@ module.exports = {
       {
         test: /\.css$/i,
         use: [
+          // 负责让 Webpack 理解 CSS 文件中的内容和依赖关系
           MiniCssExtractPlugin.loader,
           'css-loader',
         ],
@@ -36,11 +38,11 @@ module.exports = {
   },
 
   plugins: [
+    // 使用 MiniCssExtractPlugin 插件把 CSS 提取成独立的文件
     new MiniCssExtractPlugin({
       filename: 'index.css',
     }),
   ],
 
-  // 生成 source map，方便调试
   devtool: 'source-map',
 };
