@@ -47,7 +47,8 @@ class ClCard extends HTMLElement {
           color: #4b5563;
           font-size: 14px;
           line-height: 22px;
-        }`
+        }
+      </style>`;
   };
 }
 
