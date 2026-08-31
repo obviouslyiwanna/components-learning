@@ -22,6 +22,7 @@ import '@carriefish/component-learning';
 
 ```html
 <cl-button>提交</cl-button>
+<cl-input></cl-input>
 <cl-checkbox value="agreement">同意协议</cl-checkbox>
 <cl-tag>推荐</cl-tag>
 
@@ -36,13 +37,14 @@ import '@carriefish/component-learning';
 | 组件 | 用途 | API 文档 |
 | --- | --- | --- |
 | `cl-button` | 提供带默认插槽的原生按钮 | [Button](docs/components/button.md) |
+| `cl-input` | 提供最基础的文本输入框 | [Input](docs/components/input.md) |
 | `cl-checkbox` | 提供选中、禁用、值同步和变更事件 | [Checkbox](docs/components/checkbox.md) |
 | `cl-tag` | 展示轻量标签内容 | [Tag](docs/components/tag.md) |
 | `cl-card` | 展示带标题和正文区域的卡片 | [Card](docs/components/card.md) |
 
 ## 原生 Demo
 
-[examples/index.html](examples/index.html) 展示了全部组件，并包含 `cl-checkbox` 的 Attribute、Property 和事件交互。
+[examples/index.html](examples/index.html) 展示了全部组件，并包含 `cl-input` 的值读取以及 `cl-checkbox` 的 Attribute、Property 和事件交互。
 
 先生成组件库文件：
 

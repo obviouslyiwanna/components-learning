@@ -104,6 +104,16 @@
       </section>
 
       <section class="demo-section">
+        <h2>Input</h2>
+        <p>最基础的文本输入框，通过 Property 读取和设置输入值。</p>
+        <div class="stack">
+          <cl-input id="basic-input"></cl-input>
+          <cl-button id="read-input">读取 value</cl-button>
+        </div>
+        <output id="input-output">当前值：等待读取</output>
+      </section>
+
+      <section class="demo-section">
         <h2>Checkbox</h2>
         <p>Attribute 初始状态、Property 更新及自定义 change 事件。</p>
         <div class="stack">
@@ -146,6 +156,9 @@
       window.addEventListener('DOMContentLoaded', () => {
         const counterButton = document.querySelector('#counter-button');
         const buttonOutput = document.querySelector('#button-output');
+        const basicInput = document.querySelector('#basic-input');
+        const readInputButton = document.querySelector('#read-input');
+        const inputOutput = document.querySelector('#input-output');
         const checkboxOutput = document.querySelector('#checkbox-output');
         const checkboxes = Array.from(
           document.querySelectorAll('cl-checkbox:not([disabled])'),
@@ -155,6 +168,10 @@
         counterButton.addEventListener('click', () => {
           clickCount += 1;
           buttonOutput.textContent = `点击次数：${clickCount}`;
+        });
+
+        readInputButton.addEventListener('click', () => {
+          inputOutput.textContent = `当前值：${basicInput.value}`;
         });
 
         document.addEventListener('change', (event) => {
