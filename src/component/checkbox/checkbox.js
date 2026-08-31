@@ -4,6 +4,7 @@ class ClCheckbox extends HTMLElement {
     return ['checked', 'disabled', 'value'];
   }
 
+  // 初始化 Shadow DOM，并保存后续需要操作的内部元素引用。
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -13,7 +14,9 @@ class ClCheckbox extends HTMLElement {
     this.otherInput = null;
   }
 
+  // 组件挂载时渲染内部结构，并绑定插槽和原生复选框的事件。
   connectedCallback() {
+    // 避免组件重复挂载时重复渲染和绑定事件。
     if (this.shadowRoot.querySelector('input[type="checkbox"]')) {
       return;
     }
@@ -65,10 +68,12 @@ class ClCheckbox extends HTMLElement {
     this.otherInput = this.shadowRoot.querySelector('.other-input');
     this.syncState();
 
+    // 插槽内容变化时，重新判断是否需要显示“其他内容”输入框。
     this.labelSlot.addEventListener('slotchange', () => {
       this.updateOtherInput();
     });
 
+    // 将原生复选框的变化同步到组件，并向外派发自定义 change 事件。
     this.checkbox.addEventListener('change', (event) => {
       event.stopPropagation();
 
@@ -87,6 +92,7 @@ class ClCheckbox extends HTMLElement {
     });
   }
 
+  // 监听宿主元素 Attribute 变化，并同步到 Shadow DOM 内部控件。
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue || !this.checkbox) {
       return;
@@ -95,6 +101,7 @@ class ClCheckbox extends HTMLElement {
     this.syncState(name);
   }
 
+  // 将宿主元素上的 checked、disabled、value 状态同步到原生复选框。
   syncState(changedAttribute) {
     if (!this.checkbox) {
       return;
@@ -115,6 +122,7 @@ class ClCheckbox extends HTMLElement {
     this.updateOtherInput();
   }
 
+  // 根据插槽文本和选中状态，控制“其他内容”输入框的显示与清空。
   updateOtherInput() {
     if (!this.checkbox || !this.labelSlot || !this.otherInput) {
       return;
@@ -134,10 +142,12 @@ class ClCheckbox extends HTMLElement {
     }
   }
 
+  // 读取复选框选中状态；内部控件尚未创建时回退到 checked Attribute。
   get checked() {
     return this.checkbox ? this.checkbox.checked : this.hasAttribute('checked');
   }
 
+  // 设置复选框选中状态，并通过 Attribute 触发内部状态同步。
   set checked(value) {
     if (value) {
       this.setAttribute('checked', '');
@@ -146,10 +156,12 @@ class ClCheckbox extends HTMLElement {
     }
   }
 
+  // 读取复选框是否禁用。
   get disabled() {
     return this.hasAttribute('disabled');
   }
 
+  // 设置复选框禁用状态。
   set disabled(value) {
     if (value) {
       this.setAttribute('disabled', '');
@@ -158,10 +170,12 @@ class ClCheckbox extends HTMLElement {
     }
   }
 
+  // 读取复选框的值；没有设置时返回空字符串。
   get value() {
     return this.getAttribute('value') ?? '';
   }
 
+  // 设置复选框的值。
   set value(value) {
     this.setAttribute('value', value);
   }
