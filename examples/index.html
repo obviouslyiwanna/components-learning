@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Component Learning Demo</title>
+    <style>
+      :root {
+        color: #1f2937;
+        background: #f5f7fa;
+        font-family:
+          Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      body {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 40px 24px 64px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+      }
+
+      .description {
+        margin: 0 0 32px;
+        color: #6b7280;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+      }
+
+      .demo-section {
+        padding: 24px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #ffffff;
+      }
+
+      .demo-section h2 {
+        margin: 0 0 8px;
+        font-size: 20px;
+      }
+
+      .demo-section p {
+        margin: 0 0 20px;
+        color: #6b7280;
+        font-size: 14px;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+
+      output {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 44px;
+        margin-top: 16px;
+        padding: 10px 12px;
+        border-radius: 6px;
+        background: #111827;
+        color: #d1fae5;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        white-space: pre-wrap;
+      }
+    </style>
+    <script src="../dist/index.js" defer></script>
+  </head>
+  <body>
+    <h1>Component Learning</h1>
+
+    <main class="demo-grid">
+      <section class="demo-section">
+        <h2>Button</h2>
+        <p>默认插槽和原生 click 事件。</p>
+        <cl-button id="counter-button">点击计数</cl-button>
+        <output id="button-output">点击次数：0</output>
+      </section>
+
+      <section class="demo-section">
+        <h2>Checkbox</h2>
+        <p>Attribute 初始状态、Property 更新及自定义 change 事件。</p>
+        <div class="stack">
+          <cl-checkbox id="agreement" value="agreement" checked>
+            同意协议
+          </cl-checkbox>
+          <cl-checkbox value="disabled-example" disabled>
+            禁用选项
+          </cl-checkbox>
+          <cl-checkbox id="other-option" value="other">其他</cl-checkbox>
+          <div class="row">
+            <cl-button id="check-all">Property：选中</cl-button>
+            <cl-button id="clear-all">Property：取消</cl-button>
+          </div>
+        </div>
+        <output id="checkbox-output">等待 change 事件</output>
+      </section>
+
+      <section class="demo-section">
+        <h2>Tag</h2>
+        <p>通过默认插槽展示标签内容。</p>
+        <div class="row">
+          <cl-tag>推荐</cl-tag>
+          <cl-tag>Web Components</cl-tag>
+          <cl-tag>原生 JavaScript</cl-tag>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <h2>Card</h2>
+        <p>具名 title 插槽和默认内容插槽。</p>
+        <cl-card>
+          <span slot="title">周末灵感</span>
+          去公园散步，顺便记录今天看到的三种颜色。
+        </cl-card>
+      </section>
+    </main>
+
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        const counterButton = document.querySelector('#counter-button');
+        const buttonOutput = document.querySelector('#button-output');
+        const checkboxOutput = document.querySelector('#checkbox-output');
+        const checkboxes = Array.from(
+          document.querySelectorAll('cl-checkbox:not([disabled])'),
+        );
+        let clickCount = 0;
+
+        counterButton.addEventListener('click', () => {
+          clickCount += 1;
+          buttonOutput.textContent = `点击次数：${clickCount}`;
+        });
+
+        document.addEventListener('change', (event) => {
+          if (event.target.tagName !== 'CL-CHECKBOX') {
+            return;
+          }
+
+          checkboxOutput.textContent = JSON.stringify(event.detail, null, 2);
+        });
+
+        document.querySelector('#check-all').addEventListener('click', () => {
+          checkboxes.forEach((checkbox) => {
+            checkbox.checked = true;
+          });
+        });
+
+        document.querySelector('#clear-all').addEventListener('click', () => {
+          checkboxes.forEach((checkbox) => {
+            checkbox.checked = false;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

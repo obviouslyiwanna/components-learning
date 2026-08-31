@@ -1,4 +1,5 @@
 class ClCheckbox extends HTMLElement {
+  // 三种属性：checked、disabled、value，选择其他的时候会显示一个输入框
   static get observedAttributes() {
     return ['checked', 'disabled', 'value'];
   }
@@ -8,6 +9,8 @@ class ClCheckbox extends HTMLElement {
     this.attachShadow({ mode: 'open' });
 
     this.checkbox = null;
+    this.labelSlot = null;
+    this.otherInput = null;
   }
 
   connectedCallback() {
@@ -17,27 +20,60 @@ class ClCheckbox extends HTMLElement {
 
     this.shadowRoot.innerHTML = `
       <style>
+        .checkbox-wrapper {
+          display: inline-flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
         .checkbox-row {
           display: inline-flex;
           align-items: center;
           gap: 6px;
           cursor: pointer;
         }
+
+        .other-input {
+          width: 180px;
+          box-sizing: border-box;
+          margin-top: 8px;
+          padding: 6px 8px;
+        }
+
+        .other-input[hidden] {
+          display: none;
+        }
       </style>
 
-      <label class="checkbox-row">
-        <input class="checkbox" type="checkbox" />
-        <slot></slot>
-      </label>
+      <div class="checkbox-wrapper">
+        <label class="checkbox-row">
+          <input class="checkbox" type="checkbox" />
+          <slot></slot>
+        </label>
+
+        <input
+          class="other-input"
+          type="text"
+          placeholder="请输入其他内容"
+          hidden
+        />
+      </div>
     `;
 
     this.checkbox = this.shadowRoot.querySelector('.checkbox');
+    this.labelSlot = this.shadowRoot.querySelector('slot');
+    this.otherInput = this.shadowRoot.querySelector('.other-input');
     this.syncState();
+
+    this.labelSlot.addEventListener('slotchange', () => {
+      this.updateOtherInput();
+    });
 
     this.checkbox.addEventListener('change', (event) => {
       event.stopPropagation();
 
       this.checked = this.checkbox.checked;
+      this.updateOtherInput();
       this.dispatchEvent(
         new CustomEvent('change', {
           bubbles: true,
@@ -74,6 +110,27 @@ class ClCheckbox extends HTMLElement {
 
     if (!changedAttribute || changedAttribute === 'value') {
       this.checkbox.value = this.value;
+    }
+
+    this.updateOtherInput();
+  }
+
+  updateOtherInput() {
+    if (!this.checkbox || !this.labelSlot || !this.otherInput) {
+      return;
+    }
+
+    const labelText = this.labelSlot
+      .assignedNodes({ flatten: true })
+      .map((node) => node.textContent ?? '')
+      .join('')
+      .trim();
+    const shouldShow = labelText === '其他' && this.checkbox.checked;
+
+    this.otherInput.hidden = !shouldShow;
+
+    if (!shouldShow) {
+      this.otherInput.value = '';
     }
   }
 
