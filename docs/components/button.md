@@ -16,11 +16,17 @@
 
 ## Attributes
 
-当前没有组件专属 Attribute。
+| Attribute | 说明 |
+| --- | --- |
+| `variant` | 按钮颜色语义，可选 `primary`（默认）、`default`、`success`、`warning`、`danger`、`neutral` |
+| `disabled` | 禁用按钮，存在该 Attribute 即为禁用 |
 
 ## Properties
 
-当前没有组件专属 Property。
+| Property | 说明 |
+| --- | --- |
+| `variant` | 读写按钮颜色语义 |
+| `disabled` | 读写禁用状态 |
 
 ## Events
 
@@ -38,5 +44,5 @@
 
 ## 当前限制
 
-- 宿主元素上的 `disabled`、`type` 等 Attribute 尚未同步到内部原生按钮。
-- 当前没有主题、尺寸或类型变体。
+- 当前只提供基础颜色语义，没有尺寸、outline 等变体。
+- `type` 等其他 Attribute 尚未同步到内部原生按钮。
