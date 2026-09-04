@@ -4,7 +4,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   // 打包入口
-  entry: path.resolve(__dirname, 'src/index.js'),
+  entry: path.resolve(__dirname, 'src/index.ts'),
+
+  resolve: {
+    // 让 Webpack 支持 ts/tsx 文件
+    extensions: ['.ts', '.js'],
+  },
 
   // 打包输出
   output: {
@@ -26,6 +31,11 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.css$/i,
         use: [

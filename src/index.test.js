@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import './index.js';
+import './index';
 
 describe('组件库入口', () => {
   // 验证消费者只导入组件库入口时，全部公开组件都会完成注册。
